@@ -6,19 +6,17 @@ import (
 	"go.uber.org/zap/zapcore"
 )
 
-type LogComponent struct {
-	Logger *zap.Logger
-}
-
-func (log *LogComponent) InitLogger(filePath string, env EnvType) {
+func InitLogger(filePath string, env EnvType) *zap.Logger {
 	if env == EnvDev {
-		log.Logger, _ = zap.NewDevelopment()
+		logger, _ := zap.NewDevelopment()
+		return logger
 	} else {
-		log.initZapLogger(filePath, env)
+		return initZapLogger(filePath, env)
 	}
 }
 
-func (log *LogComponent) initZapLogger(filePath string, env EnvType) {
+func initZapLogger(filePath string, env EnvType) *zap.Logger {
+	var logger *zap.Logger
 	if filePath == "" {
 		filePath = DefalutLogPath
 	}
@@ -70,12 +68,13 @@ func (log *LogComponent) initZapLogger(filePath string, env EnvType) {
 			caller := zap.AddCaller()
 			//Open file and line number
 			development := zap.Development()
-			log.Logger = zap.New(core, caller, development)
+			logger = zap.New(core, caller, development)
 		}
 	case envPrePro:
 	case envPro:
 		{
-			log.Logger = zap.New(core)
+			logger = zap.New(core)
 		}
 	}
+	return logger
 }
