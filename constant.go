@@ -1,15 +1,16 @@
 package go_log
 
 const DefalutLogPath = "app.log"
+
 type EnvType int
+
 const (
 	//开发环境
 	EnvDev EnvType = iota
 	//测试环境
-	envTest
+	EnvTest
 	//预生产环境
-	envPrePro
+	EnvPrePro
 	//生产环境
-	envPro
-
+	EnvPro
 )
